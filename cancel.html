@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Canceled - eMedScribe</title>
+  <link rel="icon" href="logo.png" type="image/png" sizes="96x96">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Poppins:wght@500;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#2E8B57', // green
+            accent: '#4682B4', // blue
+            navy: '#0b216f', // navy blue
+            light: '#f9fafb', // light background
+            danger: '#DC2626' // red
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Poppins', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-light flex items-center justify-center h-screen">
+
+  <div class="text-center max-w-lg mx-auto p-8">
+    <div class="mb-6">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-danger mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+    </div>
+    <h1 class="text-4xl font-bold font-heading text-navy mb-4">Payment Canceled</h1>
+    <p class="text-gray-600 mb-8 text-lg">
+      Your payment process was canceled. You have not been charged. If you'd like to try again, you can initiate the purchase from the eMedScribe extension.
+    </p>
+    <a href="index.html" class="bg-accent text-white px-6 py-3 rounded-lg font-medium hover:bg-opacity-90 transition shadow-md">
+        Return to Homepage
+    </a>
+  </div>
+
+</body>
+</html>
