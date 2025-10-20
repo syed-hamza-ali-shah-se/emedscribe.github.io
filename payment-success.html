@@ -28,23 +28,49 @@
 </head>
 <body class="bg-light flex items-center justify-center h-screen">
 
-  <div class="text-center max-w-lg mx-auto p-8">
+  <div class="text-center max-w-lg mx-auto p-8 bg-white shadow-soft rounded-xl">
     <div class="mb-6">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-primary mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
     </div>
     <h1 class="text-4xl font-bold font-heading text-navy mb-4">Payment Successful!</h1>
-    <p class="text-gray-600 mb-8 text-lg">
+    <p class="text-gray-600 mb-6 text-lg">
       Thank you for your purchase. Your credits have been added to your eMedScribe account and are ready to use.
     </p>
-    <p class="text-gray-500 text-sm">
-      This page will close automatically in a few seconds. You can now return to the eMedScribe extension in your browser's side panel.
+    
+    <!-- Container for the Session ID -->
+    <div id="sessionIdContainer" class="text-xs text-gray-500 bg-gray-100 p-3 rounded-md" style="display: none;">
+      Your transaction reference is: <br>
+      <span id="sessionId" class="font-mono break-all"></span>
+    </div>
+
+    <p class="text-gray-500 text-sm mt-6">
+      This page will close automatically. You can now return to the eMedScribe extension.
     </p>
     <div class="mt-8">
         <img src="logo.png" alt="eMedScribe Logo" class="h-16 w-auto mx-auto opacity-75">
     </div>
   </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Create a URLSearchParams object from the current URL's query string
+      const params = new URLSearchParams(window.location.search);
+      
+      // Get the session_id from the parameters
+      const sessionId = params.get('session_id');
+
+      // If a session_id is found, display it
+      if (sessionId) {
+        const sessionIdElement = document.getElementById('sessionId');
+        const containerElement = document.getElementById('sessionIdContainer');
+        sessionIdElement.innerText = sessionId;
+        containerElement.style.display = 'block';
+      }
+    });
+  </script>
+
 </body>
 </html>
+
