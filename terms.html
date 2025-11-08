@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - e-MedScribe</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .container {
+            max-width: 800px;
+        }
+        h1 {
+            font-size: 2.25rem; /* 36px */
+            font-weight: 700;
+            margin-bottom: 0.5rem; /* 8px */
+            color: #111827; /* gray-900 */
+        }
+        h2 {
+            font-size: 1.5rem; /* 24px */
+            font-weight: 600;
+            margin-top: 2.5rem; /* 40px */
+            margin-bottom: 1rem; /* 16px */
+            color: #111827; /* gray-900 */
+            border-bottom: 1px solid #e5e7eb; /* gray-200 */
+            padding-bottom: 0.5rem; /* 8px */
+        }
+        h3 {
+            font-size: 1.25rem; /* 20px */
+            font-weight: 600;
+            margin-top: 2rem; /* 32px */
+            margin-bottom: 0.75rem; /* 12px */
+            color: #1f2937; /* gray-800 */
+        }
+        p, ul {
+            font-size: 1rem; /* 16px */
+            line-height: 1.6;
+            color: #374151; /* gray-700 */
+            margin-bottom: 1.25rem; /* 20px */
+        }
+        ul {
+            list-style-type: disc;
+            padding-left: 1.5rem; /* 24px */
+        }
+        li {
+            margin-bottom: 0.5rem; /* 8px */
+        }
+        a {
+            color: #2563eb; /* blue-600 */
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        strong {
+            font-weight: 600;
+            color: #111827; /* gray-900 */
+        }
+        .critical {
+            background-color: #fffbeb; /* yellow-50 */
+            border: 1px solid #fde68a; /* yellow-200 */
+            border-left-width: 4px;
+            border-left-color: #facc15; /* yellow-400 */
+            padding: 1rem; /* 16px */
+            border-radius: 0.375rem; /* 6px */
+            margin-bottom: 1.25rem; /* 20px */
+        }
+        .critical strong {
+            color: #b45309; /* yellow-700 */
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-6 py-12 md:py-20">
+        <h1>Terms of Service</h1>
+        <p class="text-gray-500">Last Updated: November 8, 2025</p>
+
+        <p>These Terms of Service ("Terms") govern your access to and use of the e-MedScribe Chrome Extension and associated services (collectively, the "Service") provided by e-MedScribe ("we," "us," or "our"). By accessing or using the Service, you agree to be bound by these Terms.</p>
+
+        <h2>1. HIPAA and Business Associate Agreement (BAA)</h2>
+        
+        <div class="critical">
+            <p><strong>This is the most important section of these Terms.</strong></p>
+            <p>The Service is designed to process Protected Health Information ("PHI") as defined by HIPAA. You represent and warrant that you are a healthcare professional or an authorized member of a "Covered Entity" (or another "Business Associate") and are permitted to access and use the PHI you process with this Service.</p>
+            <p><strong>A separate Business Associate Agreement (BAA) is required to use this Service.</strong> You or your organization **MUST** execute a BAA with us *before* you access or process any PHI using the Service. Use of the Service to process PHI without a valid, executed BAA is a material breach of these Terms and a violation of federal law.</p>
+        </div>
+
+        <h2>2. Description of Service</h2>
+        <p>The Service is an AI-powered clinical documentation tool. It reads clinical data from your active EHR (PointClickCare) session and uses generative AI to create a draft clinical note. You are solely responsible for the clinical use of this tool.</p>
+        
+        <h3>Disclaimer: AI is a Tool, Not a Medical Provider</h3>
+        <p>The AI-generated notes are provided as **drafts for clinical support** and are not a substitute for your professional medical judgment. You, the licensed clinician, are **solely and entirely responsible** for:</p>
+        <ul>
+            <li>Reviewing all AI-generated content for accuracy, completeness, and clinical appropriateness.</li>
+            <li>Editing and correcting any errors, omissions, or inaccuracies.</li>
+            <li>Validating and signing the final note within your EHR.</li>
+        </ul>
+        <p>e-MedScribe is not a medical provider and is not liable for any clinical decisions, errors, or outcomes resulting from your use of the generated content. You assume all risk associated with the use of the Service.</p>
+
+        <h2>3. User Accounts and Responsibilities</h2>
+        <ul>
+            <li><strong>Account:</strong> You must be authenticated through our approved provider (Microsoft Azure Entra) to use the Service.</li>
+            <li><strong>Security:</strong> You are responsible for maintaining the security of your account and your EHR session. Do not leave your session unattended.</li>
+            <li><strong>Authorized Use:</strong> You agree to use the Service only for its intended professional purpose and in compliance with all applicable laws, regulations, and your organization's policies (including HIPAA).</li>
+        </ul>
+
+        <h2>4. Payments, Credits, and Refunds</h2>
+        <h3>Payments</h3>
+        <p>The Service operates on a pre-paid "credit" system. You may purchase credits through our Service, which are processed by our third-party payment processor (Stripe). All payments are subject to Stripe's terms.</p>
+        
+        <h3>Reporting and Disputes</h3>
+        <p>If you believe a generated note is inaccurate or of poor quality, you may report the note through the Service. Reports must be submitted within **15 days** of the note's generation.</p>
+
+        <h3>Resolution</h3>
+        <p>We will review your report in a timely manner. e-MedScribe, at its **sole discretion**, will determine if the report is valid and if a resolution is warranted. A resolution may include, but is not limited to, a full or partial refund of the credits used for that specific note. Our decision on all disputes is final.</p>
+
+        <h2>5. Data Retention</h2>
+        <p>We retain generated notes and associated processed data for a period of **60 days** from the date of creation. This 60-day window allows you to access your note history and exercise your right to report issues within the 15-day reporting period. After 60 days, this data may be permanently and securely deleted from our production systems.</p>
+
+        <h2>6. Termination</h2>
+        <p>We may terminate or suspend your access to the Service immediately, without prior notice or liability, for any reason, including if you breach these Terms or the BAA. Upon termination, your right to use the Service will cease, and we will handle any remaining PHI as specified in our BAA.</p>
+
+        <h2>7. Disclaimer of Warranties</h2>
+        <p>The Service is provided on an "AS IS" and "AS AVAILABLE" basis. We make no warranties, express or implied, that the Service will be accurate, reliable, error-free, or uninterrupted. You use the Service at your own risk.</p>
+
+        <h2>8. Limitation of Liability</h2>
+        <p>To the fullest extent permitted by law, e-MedScribe shall not be liable for any indirect, incidental, special, consequential, or punitive damages, or any loss of profits or revenues, whether incurred directly or indirectly, or any loss of data, use, goodwill, or other intangible losses, resulting from (a) your use of or inability to use the Service; (b) any errors or inaccuracies in the content generated by the Service; or (c) any unauthorized access to or use of our servers and/or any PHI stored therein.</p>
+        
+        <h2>9. Governing Law</h2>
+        <p>These Terms shall be governed by the laws of the jurisdiction in which e-MedScribe is incorporated, without regard to its conflict of law provisions.</p>
+
+        <h2>10. Changes to Terms</h2>
+        <p>We reserve the right to modify these Terms at any time. If we make material changes, we will provide notice through the Service or by email. Your continued use of the Service after such changes constitutes your acceptance of the new Terms.</p>
+
+        <h2>11. Contact Us</h2>
+        <p>If you have any questions about these Terms, please contact us at:</p>
+        <p><strong>support@emedscribe.com</strong></p>
+    </div>
+</body>
+</html>
