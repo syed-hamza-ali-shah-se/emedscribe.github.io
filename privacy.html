@@ -58,49 +58,110 @@
         a:hover {
             text-decoration: underline;
         }
+        /* Added critical notice style */
+        .critical-notice {
+            background-color: #fffaf0; /* Light yellow */
+            border: 1px solid #ffeeba; /* Yellow border */
+            border-left-width: 4px;
+            border-left-color: #ffc107; /* Strong yellow */
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        .critical-notice p {
+            margin-bottom: 0;
+        }
+        .critical-notice strong {
+            color: #856404; /* Darker yellow/brown text */
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Privacy Policy for e-MedScribe</h1>
-        <p class="last-updated"><strong>Last Updated:</strong> November 7, 2025</p>
+        <h1>Privacy Policy</h1>
+        <p class="last-updated"><strong>Last Updated:</strong> November 8, 2025</p>
 
-        <p>Thank you for using e-MedScribe. This Privacy Policy explains how we collect, use, and protect your information.</p>
+        <p>e-MedScribe ("we," "us," or "our") is committed to protecting your privacy and the privacy of the data you process. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our Chrome Extension and associated services (collectively, the "Service").</p>
+        <p>Your use of the Service is also governed by our Terms of Service and a legally binding <strong>Business Associate Agreement (BAA)</strong>.</p>
 
-        <h2>1. Information We Collect</h2>
-        <p>We collect information necessary to provide our service:</p>
+        <h2>1. HIPAA and Protected Health Information (PHI)</h2>
+        <p>Our Service is designed for healthcare professionals and involves the processing of Protected Health Information ("PHI") as defined by the Health Insurance Portability and Accountability Act ("HIPAA").</p>
+        
+        <div class="critical-notice">
+            <p><strong>Business Associate Agreement (BAA) Required</strong></p>
+            <p style="margin-top: 10px;">Your use of the Service is strictly contingent upon you or your organization executing a BAA with us. This BAA is a separate, legally binding contract that governs how we handle and protect PHI. Do not use this service to process PHI until a BAA is in place.</p>
+        </div>
+        
         <ul>
-            <li><strong>User Authentication Information:</strong> When you log in using your Microsoft account, we receive your name and email address from Microsoft to identify you and secure your account.</li>
-            <li><strong>Patient Health Information (PHI):</strong> When you activate the e-MedScribe extension on a PointClickCare (PCC) webpage, the extension reads clinical data from that page. This data may include patient allergies, medications, vitals, lab results, diagnoses, and clinical documents. This data is processed <strong>only</strong> when you choose to generate a note.</li>
-            <li><strong>Payment Information:</strong> If you purchase credits, your payment is processed by our third-party payment processor (Stripe). We do not store your credit card details. We only receive a confirmation of payment and your user identifier.</li>
+            <li><strong>Business Associate:</strong> We act as a "Business Associate" to you or your organization, which is the "Covered Entity" (or another Business Associate).</li>
+            <li><strong>Our Responsibilities:</strong> We are obligated under HIPAA and our BAA to implement appropriate administrative, physical, and technical safeguards to protect the confidentiality, integrity, and availability of PHI.</li>
         </ul>
 
-        <h2>2. How We Use Your Information</h2>
-        <p>Your information is used for the sole purpose of operating the e-MedScribe service:</p>
+        <h2>2. Information We Collect</h2>
+        <h3>A. Information You Provide</h3>
         <ul>
-            <li><strong>To Authenticate You:</strong> We use your account information to log you in and manage your access.</li>
-            <li><strong>To Generate Clinical Notes:</strong> The patient data read from PCC is sent securely to our backend (hosted on Microsoft Azure, a HIPAA-compliant service) where our AI model processes it to generate a structured clinical note.</li>
-            <li><strong>To Manage Your Account:</strong> We use your information to manage your credit balance and note history.</li>
+            <li><strong>Account Information:</strong> When you register and authenticate, we collect personal information, such as your name and email address, provided via our authentication provider (Microsoft Azure Entra).</li>
+            <li><strong>Payment Information:</strong> When you purchase credits, our third-party payment processor (Stripe) will collect your payment information. We do not store your full payment card details; we only receive confirmation of payment.</li>
         </ul>
 
-        <h2>3. Data Storage, Security, and Sharing</h2>
-        <p><strong>We do not sell, trade, or rent your personal or patient data to third parties.</strong></p>
+        <h3>B. Information We Process on Your Behalf (PHI)</h3>
+        <p>To provide its core function, the Service requires access to read data from your active Electronic Health Record (EHR) webpage (e.g., PointClickCare).</p>
+        <p>This access is <strong>user-initiated</strong>. The extension does <strong>not</strong> access or read any data until you explicitly click a button to begin the note generation process. At that moment, the extension uses your active EHR session to securely access the necessary clinical data. This includes both reading information directly from the active webpage and making background requests to other EHR endpoints (e.g., PointClickCare APIs) using your session to gather a complete clinical picture. This data may include:</p>
         <ul>
-            <li><strong>Security:</strong> All data transmitted between the e-MedScribe extension and our backend is encrypted using HTTPS.</li>
-            <li><strong>Patient Data Handling:</strong> Patient data read from PCC is processed in memory. We <strong>do not</strong> permanently store this raw, scraped patient data on our servers after your note has been successfully generated and delivered to you. The final, generated note <em>is</em> stored as part of your user account history so you can access it later.</li>
-            <li><strong>Backend:</strong> Our servers are hosted on Microsoft Azure, which provides robust physical and network security.</li>
-            <li><strong>Payment:</strong> All payments are handled by Stripe, a PCI-compliant payment processor.</li>
+            <li>Patient identifiers (Name, MRN, etc.)</li>
+            <li>Allergies</li>
+            <li>Medications</li>
+            <li>Diagnoses</li>
+            <li>Vitals</li>
+            <li>Lab Results</li>
+            <li>Orders</li>
+            <li>Therapy Documents and Clinical Notes</li>
+            <li>Dietary Information</li>
+            <li>Code Status</li>
+        </ul>
+        <p>This data is securely transmitted to our backend for the sole purpose of generating your clinical note. We do not store this raw, accessed data. Only the final generated note is stored as part of your account, as described in our retention policy.</p>
+
+        <h2>3. How We Use Your Information</h2>
+        <p>We use the information we collect and process for the following purposes:</p>
+        <ul>
+            <li><strong>To Provide the Service:</strong> To process the PHI you provide (by initiating the data access) and generate the AI-based clinical notes you request.</li>
+            <li><strong>To Manage Your Account:</strong> To authenticate you, manage your credit balance, and maintain your note history.</li>
+            <li><strong>To Process Payments:</strong> To bill you for credit packages through our payment processor.</li>
+            <li><strong>To Communicate with You:</strong> To respond to support requests, send service-related announcements, and manage note reporting.</li>
+            <li><strong>To Comply with Legal Obligations:</strong> To fulfill our legal and regulatory requirements, including our obligations under HIPAA and our BAA.</li>
         </ul>
 
-        <h2>4. Your Rights</h2>
-        <p>You have the right to access the personal information we hold about you and to ask that your personal information be corrected, updated, or deleted. To do so, please contact us.</p>
+        <h2>4. Data Sharing and Disclosure</h2>
+        <p><strong>We do not sell, rent, or trade your Personal Information or PHI.</strong></p>
+        <p>We may share information with the following third-party service providers (our "sub-associates") who help us operate our Service and are bound by their own BAAs with us:</p>
+        <ul>
+            <li><strong>Microsoft Azure:</strong> For secure cloud hosting, database storage, and AI processing (GPT models). All PHI is processed within Azure's HIPAA-compliant environment.</li>
+            <li><strong>Stripe, Inc.:</strong> For secure payment processing.</li>
+        </ul>
+        <p>We may also disclose information if required by law, such as in response to a subpoena or court order, or as permitted by our BAA to report a HIPAA violation.</p>
 
-        <h2>5. Changes to This Policy</h2>
-        <p>We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page.</p>
+        <h2>5. Data Security, Storage, and Retention</h2>
+        <h3>Security</h3>
+        <p>We use administrative, technical, and physical security measures to protect PHI and personal data. This includes HTTPS encryption for all data in transit, encryption for data at rest, and leveraging the secure, HIPAA-compliant infrastructure of Microsoft Azure.</p>
+        
+        <h3>Storage</h3>
+        <ul>
+            <li><strong>Generated Notes & User Data:</strong> Your account information, your generated notes (`generated_note` and `updated_note`), and your note history are stored securely in our encrypted database.</li>
+            <li><strong>Uploaded Documents:</strong> Documents you upload for analysis are stored in our secure, encrypted Azure Blob Storage.</li>
+        </ul>
 
-        <h2>6. Contact Us</h2>
-        <p>If you have any questions about this privacy policy, please contact us at: <strong>support@emedscribe.com</strong></p>
-        <!-- TODO: Replace with your actual support email -->
+        <h3>Retention</h3>
+        <p>We retain your generated notes and associated processed data for <strong>60 days</strong> from the date of creation. This allows you to access your note history and provides a window for reporting any issues with a note. After this 60-day period, this data may be securely and permanently deleted from our systems. Your user account information will be retained as long as your account is active.</p>
+
+        <h2>6. User Rights and Controls</h2>
+        <p>You may review, update, or correct your account information (name, email) through your authentication provider. You can access your generated note history through the Service. For requests regarding the deletion of your account or specific data, please contact us, subject to the terms of our BAA.</p>
+
+        <h2>7. Changes to This Privacy Policy</h2>
+        <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last Updated" date. We encourage you to review this policy periodically.</p>
+
+        <h2>8. Contact Us</h2>
+        <p>If you have any questions about this Privacy Policy or our privacy practices, please contact us at:</p>
+        <p><strong>support@emedscribe.com</strong></p>
     </div>
 </body>
 </html>
