@@ -101,7 +101,6 @@
     }
 
     /* ---------- Hero ---------- */
-    /* CSS gradient is the fallback shown until (or unless) the WebGL mesh paints. */
     .hero-gradient {
       background: linear-gradient(135deg, #0b216f, #2E8B57, #4682B4, #0b216f);
       background-size: 300% 300%;
@@ -111,24 +110,6 @@
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
-    }
-
-    /* Stripe-style animated WebGL mesh gradient canvas */
-    #gradient-canvas {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      opacity: 0;
-      transition: opacity 1.2s ease;
-      --gradient-color-1: #0b216f;
-      --gradient-color-2: #2E8B57;
-      --gradient-color-3: #4682B4;
-      --gradient-color-4: #123f8f;
-    }
-    #gradient-canvas.isLoaded {
-      opacity: 1;
     }
 
     .hero-enter {
@@ -199,56 +180,13 @@
       left: 130%;
     }
 
-    /* ---------- Angled section dividers (Stripe-style slanted color blocks) ---------- */
-    .angled {
-      position: relative;
-    }
-    .angled > .angled-bg {
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: -2.75rem;
-      bottom: -2.75rem;
-      z-index: 0;
-      transform: skewY(-3deg);
-      transform-origin: center;
-    }
-    .angled > .angled-content {
-      position: relative;
-      z-index: 1;
-    }
-
     /* ---------- Cards ---------- */
     .feature-card {
-      position: relative;
       transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
     .feature-card:hover {
       transform: translateY(-8px);
       box-shadow: 0 22px 45px rgba(11, 33, 111, 0.12);
-    }
-    /* Pointer-following radial highlight, Stripe-style */
-    .feature-card::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(
-        240px circle at var(--mx, 50%) var(--my, 50%),
-        rgba(70, 130, 180, 0.16),
-        transparent 60%
-      );
-      opacity: 0;
-      transition: opacity 0.35s ease;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .feature-card:hover::before {
-      opacity: 1;
-    }
-    .feature-card > * {
-      position: relative;
-      z-index: 1;
     }
     .feature-card .icon-wrap {
       transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.35s ease;
@@ -366,10 +304,14 @@
 
 
   <section class="text-center py-24 px-6 hero-gradient text-white relative overflow-hidden">
-    <canvas id="gradient-canvas" data-js-darken-top></canvas>
-    <div class="absolute inset-0 z-[1] bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI3NjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4xIiBvZmZzZXQ9IjAlIi8+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZiIgc3RvcC1vcGFjaXR5PSIwIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNLTM1MS4zOTEgNDQyLjM0N0MtMzE0LjYyOCA1MDkuODIgLTIyMS4yNDkgNDk4LjE3NyAtMTYwLjY4NCA0NzguMzJjMTI5LjM4Ni00Mi4zNzggMTk1LjcwOS0xMTguNjg1IDQxOS4wOTctODIuNzIgMTM0Ljk3NCAyMS43MiAyNTAuMzQxLTMzLjQ4NiAzNDQuMTQ3LTc3LjgzM0M3NzMuOSAxODEuMDAyIDg5Mi42MjkgNjMuMzQ4IDEwMjUuNjQ2IDEyLjEzNmMxMzMuMDE3LTUxLjIxMiAyMjkuMDExLTUwLjYxMyAzMjYuMDU2IDE5LjQ0OCA1My4zMDYgMzguNDg0IDk3LjE5OCAxMDYuMTI2IDEzMS42NzcgMjAyLjkyNiAxLjE4NSAxLjgzMiAyLjY3NSA0LjEzIDQuNDcxIDYuODk0YTc2Mi45ODcgNzYyLjk4NyAwIDAgMSA0NS4wOTEgODcuOTYxYzguNTYyIDE5Ljk3IDEyLjg0NCA0Mi4yNDUgMTIuODQ0IDY2LjgyNkMxNDExLjA0OSA3MzQuNiA5OS4wNjUgNzczLjEwOS0zOS41MjQgNTQyLjExMmE1NDUuNTkgNTQ1LjU5IDAgMCAxLTMyLjQ1Ni01MmMtLjA0OS0uMTc4LS4wOTgtLjM1NS0uMTQ4LS41MzMtMTUuNS0yMi44MjctMzUuMDU2LTQxLjk1LTU4LjY2OS01Ny4zNjgtNDUuNjEtMjkuNzg3LTE0MS4wOTUtMzQuMzkyLTIyMC41OTQgMTAuMTM2eiIgZmlsbD0idXJsKCNhKSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+')]"></div>
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI3NjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4xIiBvZmZzZXQ9IjAlIi8+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZiIgc3RvcC1vcGFjaXR5PSIwIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNLTM1MS4zOTEgNDQyLjM0N0MtMzE0LjYyOCA1MDkuODIgLTIyMS4yNDkgNDk4LjE3NyAtMTYwLjY4NCA0NzguMzJjMTI5LjM4Ni00Mi4zNzggMTk1LjcwOS0xMTguNjg1IDQxOS4wOTctODIuNzIgMTM0Ljk3NCAyMS43MiAyNTAuMzQxLTMzLjQ4NiAzNDQuMTQ3LTc3LjgzM0M3NzMuOSAxODEuMDAyIDg5Mi42MjkgNjMuMzQ4IDEwMjUuNjQ2IDEyLjEzNmMxMzMuMDE3LTUxLjIxMiAyMjkuMDExLTUwLjYxMyAzMjYuMDU2IDE5LjQ0OCA1My4zMDYgMzguNDg0IDk3LjE5OCAxMDYuMTI2IDEzMS42NzcgMjAyLjkyNiAxLjE4NSAxLjgzMiAyLjY3NSA0LjEzIDQuNDcxIDYuODk0YTc2Mi45ODcgNzYyLjk4NyAwIDAgMSA0NS4wOTEgODcuOTYxYzguNTYyIDE5Ljk3IDEyLjg0NCA0Mi4yNDUgMTIuODQ0IDY2LjgyNkMxNDExLjA0OSA3MzQuNiA5OS4wNjUgNzczLjEwOS0zOS41MjQgNTQyLjExMmE1NDUuNTkgNTQ1LjU5IDAgMCAxLTMyLjQ1Ni01MmMtLjA0OS0uMTc4LS4wOTgtLjM1NS0uMTQ4LS41MzMtMTUuNS0yMi44MjctMzUuMDU2LTQxLjk1LTU4LjY2OS01Ny4zNjgtNDUuNjEtMjkuNzg3LTE0MS4wOTUtMzQuMzkyLTIyMC41OTQgMTAuMTM2eiIgZmlsbD0idXJsKCNhKSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+')]"></div>
 
-    <div class="relative z-10" id="hero-content">
+    <div class="orb orb-1 top-16 left-[8%] w-24 h-24"></div>
+    <div class="orb orb-2 bottom-20 right-[10%] w-36 h-36"></div>
+    <div class="orb orb-3 top-1/3 right-[22%] w-14 h-14"></div>
+    <div class="orb orb-4 bottom-1/4 left-[18%] w-20 h-20"></div>
+
+    <div class="relative z-10">
       <div class="inline-block bg-white bg-opacity-10 px-6 py-2 rounded-full mb-6 hero-enter hero-enter-1">
         <span class="text-sm font-semibold">Coming Soon - Join the Waitlist</span>
       </div>
@@ -459,9 +401,8 @@
     </div>
   </section>
 
-  <section id="how" class="angled py-28 px-6">
-    <div class="angled-bg bg-light"></div>
-    <div class="angled-content max-w-6xl mx-auto">
+  <section id="how" class="bg-light py-24 px-6 relative">
+    <div class="max-w-6xl mx-auto">
       <h3 class="text-3xl font-bold text-center mb-16 font-heading relative reveal">
         <span class="gradient-text">How It Works</span>
         <div class="heading-underline absolute h-1 bg-accent rounded-full bottom-0 left-1/2 transform -translate-x-1/2 mt-2"></div>
@@ -605,15 +546,14 @@
     </div>
   </section>
 
-  <section id="demo" class="angled py-28 px-6 relative text-white">
-    <div class="angled-bg bg-gradient-to-r from-primary to-accent overflow-hidden">
-      <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI3NjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4xIiBvZmZzZXQ9IjAlIi8+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZiIgc3RvcC1vcGFjaXR5PSIwIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNMTI3Mi45MTMgNzM1LjgxNGMtNDMuMjMxIDExMi41NDItMzY5LjM3NiA1Mi4zNTQtNzU5LjctMTI2LjA4M1MtNDMuNzI3IDMyOS40NjItLjQ5NiAyMTYuOTJzMjkwLjA3OS0xNzMuNDUgNjgwLjQwMyA1LjA2MiA2MzYuMjM3IDQwMi4yOSA1OTMuMDA2IDUxNC44M3oiIGZpbGw9InVybCgjYSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==')]"></div>
-      <div class="orb orb-1 top-10 left-10 w-20 h-20"></div>
-      <div class="orb orb-2 bottom-10 right-10 w-32 h-32"></div>
-      <div class="orb orb-3 top-1/4 right-1/4 w-12 h-12"></div>
-    </div>
+  <section id="demo" class="py-24 bg-gradient-to-r from-primary to-accent text-white px-6 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI3NjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4xIiBvZmZzZXQ9IjAlIi8+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZiIgc3RvcC1vcGFjaXR5PSIwIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNMTI3Mi45MTMgNzM1LjgxNGMtNDMuMjMxIDExMi41NDItMzY5LjM3NiA1Mi4zNTQtNzU5LjctMTI2LjA4M1MtNDMuNzI3IDMyOS40NjItLjQ5NiAyMTYuOTJzMjkwLjA3OS0xNzMuNDUgNjgwLjQwMyA1LjA2MiA2MzYuMjM3IDQwMi4yOSA1OTMuMDA2IDUxNC44M3oiIGZpbGw9InVybCgjYSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==')]"></div>
 
-    <div class="angled-content max-w-5xl mx-auto">
+    <div class="orb orb-1 top-10 left-10 w-20 h-20"></div>
+    <div class="orb orb-2 bottom-10 right-10 w-32 h-32"></div>
+    <div class="orb orb-3 top-1/4 right-1/4 w-12 h-12"></div>
+
+    <div class="relative z-10 max-w-5xl mx-auto">
       <div class="flex flex-col md:flex-row items-center gap-10">
         <div class="flex-1 text-left md:pr-10 reveal reveal-left">
           <h3 class="text-4xl font-bold mb-4 font-heading">Be the First to Experience eMedScribe</h3>
@@ -730,30 +670,8 @@
     </svg>
   </button>
 
-  <script src="gradient.js"></script>
   <script>
     (function () {
-      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-      // Stripe-style animated WebGL mesh gradient in the hero.
-      // Falls back silently to the CSS gradient if WebGL is unavailable or motion is reduced.
-      (function initMeshGradient() {
-        var canvas = document.getElementById('gradient-canvas');
-        if (!canvas || reduceMotion || typeof window.Gradient !== 'function') return;
-        try {
-          var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-          if (!gl) return;
-          var gradient = new window.Gradient();
-          gradient.initGradient('#gradient-canvas');
-          // This minimal build doesn't wire up the intersection observer that would
-          // normally add .isLoaded, so reveal the canvas ourselves once it's painting.
-          gradient.isIntersecting = true;
-          canvas.classList.add('isLoaded');
-        } catch (err) {
-          /* keep CSS fallback */
-        }
-      })();
-
       // Scroll-reveal via IntersectionObserver
       var revealEls = document.querySelectorAll('.reveal');
       if ('IntersectionObserver' in window) {
@@ -770,22 +688,10 @@
         revealEls.forEach(function (el) { el.classList.add('in-view'); });
       }
 
-      // Pointer-following card glow (Stripe-style). Skipped for reduced motion / touch.
-      if (!reduceMotion) {
-        document.querySelectorAll('.feature-card').forEach(function (card) {
-          card.addEventListener('mousemove', function (e) {
-            var rect = card.getBoundingClientRect();
-            card.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
-            card.style.setProperty('--my', (e.clientY - rect.top) + 'px');
-          });
-        });
-      }
-
-      // Scroll progress bar, navbar shadow, back-to-top visibility, hero parallax
+      // Scroll progress bar, navbar shadow, back-to-top visibility
       var progress = document.getElementById('scroll-progress');
       var navbar = document.getElementById('navbar');
       var backToTop = document.getElementById('back-to-top');
-      var heroContent = document.getElementById('hero-content');
       var ticking = false;
 
       function onScroll() {
@@ -794,10 +700,6 @@
         progress.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
         navbar.classList.toggle('scrolled', scrollTop > 10);
         backToTop.classList.toggle('visible', scrollTop > 500);
-        if (heroContent && !reduceMotion && scrollTop < window.innerHeight) {
-          heroContent.style.transform = 'translateY(' + scrollTop * 0.18 + 'px)';
-          heroContent.style.opacity = Math.max(0, 1 - scrollTop / (window.innerHeight * 0.85));
-        }
         ticking = false;
       }
 
