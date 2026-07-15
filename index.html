@@ -31,45 +31,269 @@
     }
   </script>
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
     .gradient-text {
       background: linear-gradient(90deg, #0b216f, #2E8B57);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
-    .feature-card {
-      transition: all 0.3s ease;
+
+    /* ---------- Scroll progress bar ---------- */
+    #scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      width: 0%;
+      background: linear-gradient(90deg, #0b216f, #2E8B57, #4682B4);
+      z-index: 60;
+      transition: width 0.1s ease-out;
     }
-    .feature-card:hover {
-      transform: translateY(-5px);
+
+    /* ---------- Navbar ---------- */
+    #navbar {
+      transition: box-shadow 0.3s ease, background-color 0.3s ease, padding 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
+    #navbar.scrolled {
+      box-shadow: 0 4px 20px rgba(11, 33, 111, 0.1);
+    }
+    .logo-img {
+      transition: transform 0.4s ease;
+    }
+    #navbar h1:hover .logo-img {
+      transform: rotate(-8deg) scale(1.08);
+    }
+
+    /* ---------- Scroll reveal ---------- */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+      transition-delay: var(--reveal-delay, 0ms);
+      will-change: opacity, transform;
+    }
+    .reveal.in-view {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      transform: translateX(-32px);
+    }
+    .reveal-right {
+      transform: translateX(32px);
+    }
+    .reveal-left.in-view,
+    .reveal-right.in-view {
+      transform: translateX(0);
+    }
+    .reveal-scale {
+      transform: scale(0.94);
+    }
+    .reveal-scale.in-view {
+      transform: scale(1);
+    }
+
+    /* ---------- Hero ---------- */
+    .hero-gradient {
+      background: linear-gradient(135deg, #0b216f, #2E8B57, #4682B4, #0b216f);
+      background-size: 300% 300%;
+      animation: gradientShift 14s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .hero-enter {
+      opacity: 0;
+      transform: translateY(24px);
+      animation: heroFadeUp 0.9s ease-out forwards;
+    }
+    .hero-enter-1 { animation-delay: 0.1s; }
+    .hero-enter-2 { animation-delay: 0.25s; }
+    .hero-enter-3 { animation-delay: 0.4s; }
+    .hero-enter-4 { animation-delay: 0.55s; }
+    @keyframes heroFadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Floating decorative orbs */
+    .orb {
+      position: absolute;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.08);
+      pointer-events: none;
+    }
+    .orb-1 { animation: float 8s ease-in-out infinite; }
+    .orb-2 { animation: float 11s ease-in-out infinite reverse; }
+    .orb-3 { animation: float 9s ease-in-out 1s infinite; }
+    .orb-4 { animation: float 13s ease-in-out 2s infinite reverse; }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      33% { transform: translateY(-18px) translateX(10px); }
+      66% { transform: translateY(10px) translateX(-8px); }
+    }
+
+    /* Scroll-down indicator */
+    .scroll-indicator {
+      animation: bounceDown 2s ease-in-out infinite;
+    }
+    @keyframes bounceDown {
+      0%, 100% { transform: translateY(0); opacity: 0.7; }
+      50% { transform: translateY(8px); opacity: 1; }
+    }
+
+    /* ---------- Buttons ---------- */
     .btn-hover {
-      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .btn-hover:hover {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
     }
+    .btn-hover::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -80%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+      pointer-events: none;
+    }
+    .btn-hover:hover::after {
+      left: 130%;
+    }
+
+    /* ---------- Cards ---------- */
+    .feature-card {
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 22px 45px rgba(11, 33, 111, 0.12);
+    }
+    .feature-card .icon-wrap {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.35s ease;
+    }
+    .feature-card:hover .icon-wrap {
+      transform: scale(1.12) rotate(-4deg);
+    }
+
+    /* Step number badge on "How It Works" */
+    .step-number {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .feature-card:hover .step-number {
+      transform: scale(1.15);
+    }
+
+    /* Section heading underline draws in on reveal */
+    .heading-underline {
+      width: 0;
+      transition: width 0.8s ease 0.3s;
+    }
+    .in-view .heading-underline {
+      width: 5rem;
+    }
+
+    /* ---------- Badges ---------- */
     .coming-soon-badge {
       background: linear-gradient(90deg, #0b216f, #4682B4);
       animation: pulse 2s infinite;
     }
     @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(70, 130, 180, 0.4);
+      0% { box-shadow: 0 0 0 0 rgba(70, 130, 180, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(70, 130, 180, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(70, 130, 180, 0); }
+    }
+
+    /* ---------- Form ---------- */
+    .form-input {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+    .form-input:focus {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(46, 139, 87, 0.12);
+    }
+    .form-card {
+      transition: box-shadow 0.4s ease;
+    }
+    .form-card:hover {
+      box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ---------- Video frame ---------- */
+    .video-frame {
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .video-frame:hover {
+      transform: scale(1.015);
+      box-shadow: 0 30px 60px rgba(11, 33, 111, 0.2);
+    }
+
+    /* ---------- Back to top ---------- */
+    #back-to-top {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 50;
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    #back-to-top.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* ---------- Reduced motion ---------- */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
       }
-      70% {
-        box-shadow: 0 0 0 10px rgba(70, 130, 180, 0);
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
       }
-      100% {
-        box-shadow: 0 0 0 0 rgba(70, 130, 180, 0);
+      .reveal,
+      .hero-enter {
+        opacity: 1;
+        transform: none;
+      }
+      .in-view .heading-underline {
+        width: 5rem;
       }
     }
   </style>
 </head>
 <body class="bg-white text-gray-800 font-sans">
 
-<nav class="sticky top-0 z-50 bg-white shadow-md py-3 px-6 md:px-8 flex flex-wrap justify-between items-center">
+<div id="scroll-progress"></div>
+
+<nav id="navbar" class="sticky top-0 z-50 shadow-md py-3 px-6 md:px-8 flex flex-wrap justify-between items-center">
   <h1 class="text-xl font-bold text-navy flex items-center">
-    <img src="logo.png" alt="eMedScribe Logo" class="h-12 w-16 mr-0.5"> 
+    <img src="logo.png" alt="eMedScribe Logo" class="h-12 w-16 mr-0.5 logo-img">
     <span class="text-2xl font-heading gradient-text">eMedScribe</span>
   </h1>
   <div class="flex items-center">
@@ -79,18 +303,30 @@
 </nav>
 
 
-  <section class="text-center py-24 px-6 bg-gradient-to-br from-navy via-primary to-accent text-white relative overflow-hidden">
+  <section class="text-center py-24 px-6 hero-gradient text-white relative overflow-hidden">
     <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI3NjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4xIiBvZmZzZXQ9IjAlIi8+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZiIgc3RvcC1vcGFjaXR5PSIwIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNLTM1MS4zOTEgNDQyLjM0N0MtMzE0LjYyOCA1MDkuODIgLTIyMS4yNDkgNDk4LjE3NyAtMTYwLjY4NCA0NzguMzJjMTI5LjM4Ni00Mi4zNzggMTk1LjcwOS0xMTguNjg1IDQxOS4wOTctODIuNzIgMTM0Ljk3NCAyMS43MiAyNTAuMzQxLTMzLjQ4NiAzNDQuMTQ3LTc3LjgzM0M3NzMuOSAxODEuMDAyIDg5Mi42MjkgNjMuMzQ4IDEwMjUuNjQ2IDEyLjEzNmMxMzMuMDE3LTUxLjIxMiAyMjkuMDExLTUwLjYxMyAzMjYuMDU2IDE5LjQ0OCA1My4zMDYgMzguNDg0IDk3LjE5OCAxMDYuMTI2IDEzMS42NzcgMjAyLjkyNiAxLjE4NSAxLjgzMiAyLjY3NSA0LjEzIDQuNDcxIDYuODk0YTc2Mi45ODcgNzYyLjk4NyAwIDAgMSA0NS4wOTEgODcuOTYxYzguNTYyIDE5Ljk3IDEyLjg0NCA0Mi4yNDUgMTIuODQ0IDY2LjgyNkMxNDExLjA0OSA3MzQuNiA5OS4wNjUgNzczLjEwOS0zOS41MjQgNTQyLjExMmE1NDUuNTkgNTQ1LjU5IDAgMCAxLTMyLjQ1Ni01MmMtLjA0OS0uMTc4LS4wOTgtLjM1NS0uMTQ4LS41MzMtMTUuNS0yMi44MjctMzUuMDU2LTQxLjk1LTU4LjY2OS01Ny4zNjgtNDUuNjEtMjkuNzg3LTE0MS4wOTUtMzQuMzkyLTIyMC41OTQgMTAuMTM2eiIgZmlsbD0idXJsKCNhKSIgZmlsbC1ydWxlPSJldmVub2RkIi8+PC9zdmc+')]"></div>
+
+    <div class="orb orb-1 top-16 left-[8%] w-24 h-24"></div>
+    <div class="orb orb-2 bottom-20 right-[10%] w-36 h-36"></div>
+    <div class="orb orb-3 top-1/3 right-[22%] w-14 h-14"></div>
+    <div class="orb orb-4 bottom-1/4 left-[18%] w-20 h-20"></div>
+
     <div class="relative z-10">
-      <div class="inline-block bg-white bg-opacity-10 px-6 py-2 rounded-full mb-6">
+      <div class="inline-block bg-white bg-opacity-10 px-6 py-2 rounded-full mb-6 hero-enter hero-enter-1">
         <span class="text-sm font-semibold">Coming Soon - Join the Waitlist</span>
       </div>
-      <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-heading">Let AI Handle the Charts <br><span class="text-3xl md:text-4xl">You Focus on the Patient</span></h2>
-      <p class="text-xl mb-10 max-w-3xl mx-auto opacity-90">Automatically generate structured, SNF-compliant H&P notes from hospital records using HIPAA-compliant AI.</p>
-      
-      <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-heading hero-enter hero-enter-2">Let AI Handle the Charts <br><span class="text-3xl md:text-4xl">You Focus on the Patient</span></h2>
+      <p class="text-xl mb-10 max-w-3xl mx-auto opacity-90 hero-enter hero-enter-3">Automatically generate structured, SNF-compliant H&P notes from hospital records using HIPAA-compliant AI.</p>
+
+      <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6 hero-enter hero-enter-4">
         <a href="#demo" class="bg-white text-primary px-8 py-4 font-semibold rounded-lg shadow-lg hover:bg-gray-100 transition btn-hover">Get Early Access</a>
         <a href="#how" class="border-2 border-white px-8 py-4 font-semibold rounded-lg hover:bg-white hover:text-primary transition btn-hover">See How It Works</a>
+      </div>
+
+      <div class="mt-14 flex justify-center scroll-indicator">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+        </svg>
       </div>
     </div>
   </section>
@@ -105,14 +341,14 @@
   </div>
 
   <section class="py-24 px-6 max-w-6xl mx-auto">
-    <h3 class="text-3xl font-bold text-center mb-16 font-heading relative">
+    <h3 class="text-3xl font-bold text-center mb-16 font-heading relative reveal">
       <span class="gradient-text">Key Features</span>
-      <div class="absolute w-20 h-1 bg-primary rounded-full bottom-0 left-1/2 transform -translate-x-1/2 mt-2"></div>
+      <div class="heading-underline absolute h-1 bg-primary rounded-full bottom-0 left-1/2 transform -translate-x-1/2 mt-2"></div>
     </h3>
     <div class="grid md:grid-cols-2 gap-10">
-      <div class="bg-light p-6 rounded-xl shadow-feature feature-card">
+      <div class="bg-light p-6 rounded-xl shadow-feature feature-card reveal" style="--reveal-delay: 0ms">
         <div class="flex items-start">
-          <div class="bg-primary bg-opacity-10 p-3 rounded-lg mr-4">
+          <div class="bg-primary bg-opacity-10 p-3 rounded-lg mr-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -123,9 +359,9 @@
           </div>
         </div>
       </div>
-      <div class="bg-light p-6 rounded-xl shadow-feature feature-card">
+      <div class="bg-light p-6 rounded-xl shadow-feature feature-card reveal" style="--reveal-delay: 120ms">
         <div class="flex items-start">
-          <div class="bg-primary bg-opacity-10 p-3 rounded-lg mr-4">
+          <div class="bg-primary bg-opacity-10 p-3 rounded-lg mr-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
@@ -136,9 +372,9 @@
           </div>
         </div>
       </div>
-      <div class="bg-light p-6 rounded-xl shadow-feature feature-card">
+      <div class="bg-light p-6 rounded-xl shadow-feature feature-card reveal" style="--reveal-delay: 240ms">
         <div class="flex items-start">
-          <div class="bg-primary bg-opacity-10 p-3 rounded-lg mr-4">
+          <div class="bg-primary bg-opacity-10 p-3 rounded-lg mr-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
             </svg>
@@ -149,9 +385,9 @@
           </div>
         </div>
       </div>
-      <div class="bg-light p-6 rounded-xl shadow-feature feature-card">
+      <div class="bg-light p-6 rounded-xl shadow-feature feature-card reveal" style="--reveal-delay: 360ms">
         <div class="flex items-start">
-          <div class="bg-primary bg-opacity-10 p-3 rounded-lg mr-4">
+          <div class="bg-primary bg-opacity-10 p-3 rounded-lg mr-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
@@ -167,13 +403,14 @@
 
   <section id="how" class="bg-light py-24 px-6 relative">
     <div class="max-w-6xl mx-auto">
-      <h3 class="text-3xl font-bold text-center mb-16 font-heading relative">
+      <h3 class="text-3xl font-bold text-center mb-16 font-heading relative reveal">
         <span class="gradient-text">How It Works</span>
-        <div class="absolute w-20 h-1 bg-accent rounded-full bottom-0 left-1/2 transform -translate-x-1/2 mt-2"></div>
+        <div class="heading-underline absolute h-1 bg-accent rounded-full bottom-0 left-1/2 transform -translate-x-1/2 mt-2"></div>
       </h3>
       <div class="grid md:grid-cols-4 gap-6 text-center">
-        <div class="bg-white p-8 rounded-xl shadow-soft feature-card">
-          <div class="bg-accent bg-opacity-10 p-4 rounded-full inline-flex mb-4">
+        <div class="bg-white p-8 rounded-xl shadow-soft feature-card relative reveal" style="--reveal-delay: 0ms">
+          <div class="step-number absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-navy to-accent text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center shadow-lg">1</div>
+          <div class="bg-accent bg-opacity-10 p-4 rounded-full inline-flex mb-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
             </svg>
@@ -181,8 +418,9 @@
           <h4 class="font-semibold text-lg mb-3 text-navy">Connect</h4>
           <p class="text-gray-600">We securely connect to hospital data through our HIPAA-compliant interface.</p>
         </div>
-        <div class="bg-white p-8 rounded-xl shadow-soft feature-card">
-          <div class="bg-accent bg-opacity-10 p-4 rounded-full inline-flex mb-4">
+        <div class="bg-white p-8 rounded-xl shadow-soft feature-card relative reveal" style="--reveal-delay: 150ms">
+          <div class="step-number absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-navy to-accent text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center shadow-lg">2</div>
+          <div class="bg-accent bg-opacity-10 p-4 rounded-full inline-flex mb-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
@@ -190,8 +428,9 @@
           <h4 class="font-semibold text-lg mb-3 text-navy">Extract</h4>
           <p class="text-gray-600">Relevant information is automatically identified and extracted from charts.</p>
         </div>
-        <div class="bg-white p-8 rounded-xl shadow-soft feature-card">
-          <div class="bg-accent bg-opacity-10 p-4 rounded-full inline-flex mb-4">
+        <div class="bg-white p-8 rounded-xl shadow-soft feature-card relative reveal" style="--reveal-delay: 300ms">
+          <div class="step-number absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-navy to-accent text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center shadow-lg">3</div>
+          <div class="bg-accent bg-opacity-10 p-4 rounded-full inline-flex mb-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
@@ -199,8 +438,9 @@
           <h4 class="font-semibold text-lg mb-3 text-navy">Generate</h4>
           <p class="text-gray-600">An H&P is created based on your specialty needs and preferences.</p>
         </div>
-        <div class="bg-white p-8 rounded-xl shadow-soft feature-card">
-          <div class="bg-accent bg-opacity-10 p-4 rounded-full inline-flex mb-4">
+        <div class="bg-white p-8 rounded-xl shadow-soft feature-card relative reveal" style="--reveal-delay: 450ms">
+          <div class="step-number absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-navy to-accent text-white text-sm font-bold w-8 h-8 rounded-full flex items-center justify-center shadow-lg">4</div>
+          <div class="bg-accent bg-opacity-10 p-4 rounded-full inline-flex mb-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
@@ -214,24 +454,24 @@
 
   <section id="demo-video" class="py-24 px-6 bg-white">
     <div class="max-w-5xl mx-auto text-center">
-      <h3 class="text-3xl font-bold mb-10 font-heading">
+      <h3 class="text-3xl font-bold mb-10 font-heading reveal">
         <span class="gradient-text">See eMedScribe in Action</span>
       </h3>
-      
-      <div class="relative w-full rounded-2xl shadow-2xl overflow-hidden border-4 border-gray-100 bg-gray-900">
+
+      <div class="relative w-full rounded-2xl shadow-2xl overflow-hidden border-4 border-gray-100 bg-gray-900 video-frame reveal reveal-scale">
         <div class="aspect-w-16 aspect-h-9 relative pb-[56.25%] h-0">
-          <iframe 
+          <iframe
             class="absolute top-0 left-0 w-full h-full"
-            src="https://www.youtube.com/embed/NqP8RnlYZ4w" 
-            title="eMedScribe Product Demo" 
-            frameborder="0" 
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+            src="https://www.youtube.com/embed/NqP8RnlYZ4w"
+            title="eMedScribe Product Demo"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
           </iframe>
         </div>
       </div>
-      
-      <p class="mt-8 text-gray-600 text-lg">
+
+      <p class="mt-8 text-gray-600 text-lg reveal" style="--reveal-delay: 150ms">
         Watch how eMedScribe transforms patient data into clinical notes in seconds.
       </p>
     </div>
@@ -239,14 +479,14 @@
 
   <section class="py-24 bg-white px-6">
     <div class="max-w-5xl mx-auto">
-      <h3 class="text-3xl font-bold mb-6 text-center font-heading relative inline-block">
+      <h3 class="text-3xl font-bold mb-6 text-center font-heading relative inline-block reveal">
         <span class="gradient-text">Why Choose eMedScribe?</span>
-        <div class="absolute w-20 h-1 bg-health rounded-full bottom-0 left-1/2 transform -translate-x-1/2 mt-2"></div>
+        <div class="heading-underline absolute h-1 bg-health rounded-full bottom-0 left-1/2 transform -translate-x-1/2 mt-2"></div>
       </h3>
 
       <div class="grid md:grid-cols-3 gap-8 mt-16">
-        <div class="bg-light p-6 rounded-xl shadow-feature">
-          <div class="bg-navy bg-opacity-10 p-4 rounded-full inline-flex mb-4">
+        <div class="bg-light p-6 rounded-xl shadow-feature feature-card reveal" style="--reveal-delay: 0ms">
+          <div class="bg-navy bg-opacity-10 p-4 rounded-full inline-flex mb-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -255,8 +495,8 @@
           <p class="text-gray-600">Cut hours from your documentation process, allowing you to focus more on patient care and less on paperwork.</p>
         </div>
 
-        <div class="bg-light p-6 rounded-xl shadow-feature">
-          <div class="bg-navy bg-opacity-10 p-4 rounded-full inline-flex mb-4">
+        <div class="bg-light p-6 rounded-xl shadow-feature feature-card reveal" style="--reveal-delay: 120ms">
+          <div class="bg-navy bg-opacity-10 p-4 rounded-full inline-flex mb-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
             </svg>
@@ -265,8 +505,8 @@
           <p class="text-gray-600">Our platform is being built from the ground up with HIPAA compliance and data security as top priorities.</p>
         </div>
 
-        <div class="bg-light p-6 rounded-xl shadow-feature">
-          <div class="bg-navy bg-opacity-10 p-4 rounded-full inline-flex mb-4">
+        <div class="bg-light p-6 rounded-xl shadow-feature feature-card reveal" style="--reveal-delay: 240ms">
+          <div class="bg-navy bg-opacity-10 p-4 rounded-full inline-flex mb-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
@@ -277,8 +517,8 @@
       </div>
 
       <div class="grid md:grid-cols-2 gap-8 mt-10">
-        <div class="bg-light p-6 rounded-xl shadow-feature">
-          <div class="bg-navy bg-opacity-10 p-4 rounded-full inline-flex mb-4">
+        <div class="bg-light p-6 rounded-xl shadow-feature feature-card reveal reveal-left">
+          <div class="bg-navy bg-opacity-10 p-4 rounded-full inline-flex mb-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
             </svg>
@@ -287,8 +527,8 @@
           <p class="text-gray-600">AI-generated notes that adapt to your specialty and personal documentation style, ensuring consistency and completeness.</p>
         </div>
 
-        <div class="bg-light p-6 rounded-xl shadow-feature">
-          <div class="bg-navy bg-opacity-10 p-4 rounded-full inline-flex mb-4">
+        <div class="bg-light p-6 rounded-xl shadow-feature feature-card reveal reveal-right">
+          <div class="bg-navy bg-opacity-10 p-4 rounded-full inline-flex mb-4 icon-wrap">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
             </svg>
@@ -298,7 +538,7 @@
         </div>
       </div>
 
-      <div class="mt-16 bg-light p-8 rounded-xl shadow-lg text-center">
+      <div class="mt-16 bg-light p-8 rounded-xl shadow-lg text-center reveal reveal-scale">
         <h4 class="text-2xl font-bold mb-4 text-navy">Ready to Transform Your Documentation Process?</h4>
         <p class="text-lg text-gray-700 mb-6">eMedScribe is currently in development with our team of physicians and AI experts. Be among the first to experience this revolutionary tool when it launches.</p>
         <a href="#demo" class="inline-block bg-gradient-to-r from-primary to-accent text-white px-8 py-4 rounded-lg font-semibold hover:opacity-90 transition shadow-md btn-hover">Join the Waitlist</a>
@@ -309,30 +549,30 @@
   <section id="demo" class="py-24 bg-gradient-to-r from-primary to-accent text-white px-6 relative overflow-hidden">
     <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI3NjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4xIiBvZmZzZXQ9IjAlIi8+PHN0b3Agc3RvcC1jb2xvcj0iI2ZmZiIgc3RvcC1vcGFjaXR5PSIwIiBvZmZzZXQ9IjEwMCUiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cGF0aCBkPSJNMTI3Mi45MTMgNzM1LjgxNGMtNDMuMjMxIDExMi41NDItMzY5LjM3NiA1Mi4zNTQtNzU5LjctMTI2LjA4M1MtNDMuNzI3IDMyOS40NjItLjQ5NiAyMTYuOTJzMjkwLjA3OS0xNzMuNDUgNjgwLjQwMyA1LjA2MiA2MzYuMjM3IDQwMi4yOSA1OTMuMDA2IDUxNC44M3oiIGZpbGw9InVybCgjYSkiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvc3ZnPg==')]"></div>
 
-    <div class="absolute top-10 left-10 w-20 h-20 bg-white bg-opacity-10 rounded-full"></div>
-    <div class="absolute bottom-10 right-10 w-32 h-32 bg-white bg-opacity-10 rounded-full"></div>
-    <div class="absolute top-1/4 right-1/4 w-12 h-12 bg-white bg-opacity-5 rounded-full"></div>
+    <div class="orb orb-1 top-10 left-10 w-20 h-20"></div>
+    <div class="orb orb-2 bottom-10 right-10 w-32 h-32"></div>
+    <div class="orb orb-3 top-1/4 right-1/4 w-12 h-12"></div>
 
     <div class="relative z-10 max-w-5xl mx-auto">
       <div class="flex flex-col md:flex-row items-center gap-10">
-        <div class="flex-1 text-left md:pr-10">
+        <div class="flex-1 text-left md:pr-10 reveal reveal-left">
           <h3 class="text-4xl font-bold mb-4 font-heading">Be the First to Experience eMedScribe</h3>
           <p class="text-lg opacity-90 mb-6">Join our exclusive group of early adopters and help shape the future of medical documentation.</p>
 
           <div class="space-y-3 mb-8">
-            <div class="flex items-center">
+            <div class="flex items-center reveal" style="--reveal-delay: 150ms">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span>Priority access when we launch</span>
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center reveal" style="--reveal-delay: 280ms">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <span>Exclusive early-bird pricing</span>
             </div>
-            <div class="flex items-center">
+            <div class="flex items-center reveal" style="--reveal-delay: 410ms">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
@@ -352,8 +592,8 @@
           </div>
         </div>
 
-        <div class="flex-1">
-          <form action="https://formsubmit.co/support@emedscribe.com" method="POST" class="bg-white text-black p-8 rounded-xl shadow-2xl relative">
+        <div class="flex-1 reveal reveal-right">
+          <form action="https://formsubmit.co/support@emedscribe.com" method="POST" class="bg-white text-black p-8 rounded-xl shadow-2xl relative form-card">
             <div class="absolute -top-4 -right-4 bg-accent text-white text-xs px-4 py-1 rounded-full font-bold uppercase tracking-wide shadow-lg">
               Early Access
             </div>
@@ -366,20 +606,20 @@
             <div class="space-y-5">
               <div>
                 <label class="block mb-2 font-medium text-gray-700">Full Name</label>
-                <input type="text" name="name" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" placeholder="Dr. Jane Smith" />
+                <input type="text" name="name" required class="form-input w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Dr. Jane Smith" />
               </div>
 
               <div>
                 <label class="block mb-2 font-medium text-gray-700">Email Address</label>
-                <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" placeholder="jane.smith@example.com" />
+                <input type="email" name="email" required class="form-input w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="jane.smith@example.com" />
               </div>
 
               <div>
                 <label class="block mb-2 font-medium text-gray-700">Medical Specialty</label>
-                <input type="text" name="specialty" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition" placeholder="Internal Medicine" />
+                <input type="text" name="specialty" required class="form-input w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Internal Medicine" />
               </div>
 
-              <button type="submit" class="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold py-3 rounded-lg hover:opacity-90 transition shadow-md transform hover:-translate-y-1">
+              <button type="submit" class="w-full bg-gradient-to-r from-primary to-accent text-white font-semibold py-3 rounded-lg hover:opacity-90 transition shadow-md btn-hover">
                 Reserve My Spot
               </button>
 
@@ -391,15 +631,12 @@
         </div>
       </div>
     </div>
+  </section>
 
-
-  <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI3NjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4wNSIgb2Zmc2V0PSIwJSIvPjxzdG9wIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iMCIgb2Zmc2V0PSIxMDAlIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZD0iTTEyNzIuOTEzIDczNS44MTRjLTQzLjIzMSAxMTIuNTQyLTM2OS4zNzYgNTIuMzU0LTc1OS43LTEyNi4wODNTLTQzLjcyNyAzMjkuNDYyLS40OTYgMjE2LjkyczI5MC4wNzktMTczLjQ1IDY4MC40MDMgNS4wNjIgNjM2LjIzNyA0MDIuMjkgNTkzLjAwNiA1MTQuODN6IiBmaWxsPSJ1cmwoI2EpIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=')] opacity-50"></div>
+  <footer class="py-16 bg-navy text-white px-6 relative overflow-hidden">
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTQ0MCIgaGVpZ2h0PSI3NjgiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IHgxPSI1MCUiIHkxPSIwJSIgeDI9IjUwJSIgeTI9IjEwMCUiIGlkPSJhIj48c3RvcCBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4wNSIgb2Zmc2V0PSIwJSIvPjxzdG9wIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iMCIgb2Zmc2V0PSIxMDAlIi8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZD0iTTEyNzIuOTEzIDczNS44MTRjLTQzLjIzMSAxMTIuNTQyLTM2OS4zNzYgNTIuMzU0LTc1OS43LTEyNi4wODNTLTQzLjcyNyAzMjkuNDYyLS40OTYgMjE2LjkyczI5MC4wNzktMTczLjQ1IDY4MC40MDMgNS4wNjIgNjM2LjIzNyA0MDIuMjkgNTkzLjAwNiA1MTQuODN6IiBmaWxsPSJ1cmwoI2EpIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=')] opacity-50"></div>
 
     <div class="max-w-5xl mx-auto relative z-10 text-center">
-      <div class="flex flex-col items-center justify-center mb-8">
-
-      </div>
-
       <div class="flex items-center justify-center mb-8">
         <div class="w-full max-w-xs h-px bg-white bg-opacity-20"></div>
         <div class="px-4">
@@ -416,10 +653,68 @@
         <p class="text-white text-opacity-90 max-w-md mx-auto">We're building the future of clinical documentation. Join us on this journey.</p>
       </div>
 
+      <div class="flex justify-center space-x-6 mb-6 text-sm">
+        <a href="privacy.html" class="text-white text-opacity-70 hover:text-opacity-100 transition">Privacy Policy</a>
+        <a href="terms.html" class="text-white text-opacity-70 hover:text-opacity-100 transition">Terms of Service</a>
+      </div>
+
       <div class="text-sm text-white text-opacity-60">
         &copy; 2025 eMedScribe. All rights reserved.
       </div>
     </div>
   </footer>
+
+  <button id="back-to-top" aria-label="Back to top" class="bg-gradient-to-r from-navy to-primary text-white w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:opacity-90">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+    </svg>
+  </button>
+
+  <script>
+    (function () {
+      // Scroll-reveal via IntersectionObserver
+      var revealEls = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('in-view');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+        revealEls.forEach(function (el) { observer.observe(el); });
+      } else {
+        revealEls.forEach(function (el) { el.classList.add('in-view'); });
+      }
+
+      // Scroll progress bar, navbar shadow, back-to-top visibility
+      var progress = document.getElementById('scroll-progress');
+      var navbar = document.getElementById('navbar');
+      var backToTop = document.getElementById('back-to-top');
+      var ticking = false;
+
+      function onScroll() {
+        var scrollTop = window.scrollY || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        progress.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+        navbar.classList.toggle('scrolled', scrollTop > 10);
+        backToTop.classList.toggle('visible', scrollTop > 500);
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', function () {
+        if (!ticking) {
+          window.requestAnimationFrame(onScroll);
+          ticking = true;
+        }
+      }, { passive: true });
+      onScroll();
+
+      backToTop.addEventListener('click', function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    })();
+  </script>
 </body>
 </html>
